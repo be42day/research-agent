@@ -49,7 +49,7 @@ LangSmith is optional and only required if tracing is enabled.
 Clone the repository and move into the project directory:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/be42day/research-agent.git
 cd chat-model
 ```
 
