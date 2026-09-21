@@ -28,6 +28,16 @@ Final response / another tool call
 * **`state.py`** — Conversation message state.
 * **`tools.py`** — arXiv search and PDF download tools.
 
+## Tool Design
+
+### `search_arxiv`
+
+This tool addresses the user's need to discover relevant research papers without manually searching arXiv. It provides structured paper information, including the title, update date, abstract, and PDF URL, giving the agent the information needed for subsequent research steps.
+
+### `download_pdf`
+
+This tool complements `search_arxiv` by allowing the agent to retrieve the actual paper once a relevant result has been identified. Separating search and download gives the agent control over whether downloading is necessary instead of downloading papers for every search request.
+
 ## Tool Selection
 
 The LLM decides which tool is relevant to the user's request.
