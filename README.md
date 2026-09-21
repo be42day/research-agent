@@ -105,11 +105,11 @@ The application starts an interactive chat loop.
 Example:
 
 ```text
-You: Find papers about 3D vision algorithms
+You: Find papers about multi-agent systems
 
 Agent: ...
 
-You: Download the most recent one
+You: Find papers about 3d-vision algorithms and download the most new one
 
 Agent: ...
 ```
