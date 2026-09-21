@@ -10,25 +10,19 @@ User
   ▼
 LLM Node
   │
-  ├── No tool needed ───────────────► Final response
+  ├── No tool needed ──────► Final response
   │
   └── Tool call
         │
         ▼
      Tool Node
         │
-        ├── search_arxiv
-        └── download_pdf
-        │
-        ▼
-      Tool result
-        │
         ▼
       LLM Node
         │
-        ├── Another tool needed ─────► Tool Node
+        ├── Another tool needed ──► Tool Node
         │
-        └── No more tools ───────────► Final response
+        └── No more tools ────────► Final response
 ```
 
 The application keeps the conversation message history during the interactive session, allowing the agent to resolve short follow-up questions that depend on previous turns.
@@ -43,12 +37,6 @@ This tool addresses the user's need to discover relevant research papers without
 
 This tool complements `search_arxiv` by allowing the agent to retrieve the actual paper once a relevant result has been identified. Keeping search and download as separate tools allows the agent to download a paper only when the user requests it.
 
-Together, the tools support a simple research workflow:
-
-```text
-Search → Select → Download
-```
-
 ## Key Trade-offs
 
 ### Simple graph vs. more complex agent architecture
@@ -62,10 +50,6 @@ Tool selection is delegated to the LLM rather than implementing custom keyword-b
 ### Session context vs. persistent memory
 
 Conversation history is maintained in application state for the current interactive session. This is sufficient for the required multi-turn context while avoiding the complexity of a persistent memory backend.
-
-### Real tools vs. mocked external services in tests
-
-The tools use the real arXiv and HTTP interfaces in the application, while unit and integration tests mock external dependencies where appropriate. This keeps the automated test suite deterministic and fast while still allowing end-to-end testing of the real system when needed.
 
 ### Optional observability
 
@@ -88,9 +72,11 @@ The system prompt instructs the agent to report tool failures clearly and never 
 
 With more time, I would extend the project in several directions.
 
-### User Interface
+### User Interface and Streaming
 
-I would add a **Streamlit-based graphical interface** to make the research agent easier to use than the current command-line interface. This could include conversation history, tool activity, downloaded papers, and clearer presentation of research results.
+I would add a **Streamlit-based graphical interface** to make the research agent easier to use than the current command-line interface. The interface could include conversation history, tool activity, downloaded papers, and clearer presentation of research results.
+
+I would also add **streaming responses** so that the agent's answer is displayed incrementally as it is generated. This would provide a more responsive and interactive user experience, especially for longer research tasks.
 
 ### Model Flexibility
 
@@ -105,5 +91,3 @@ I would add more research-oriented tools to make the agent a more complete resea
 At production scale, I would add persistent conversation storage so context can survive application restarts and multiple sessions. A database-backed checkpointer would replace the current in-memory application state.
 
 I would also improve the download pipeline with retries, stronger URL validation, file-size limits, safe file naming, and asynchronous/background downloads. Large downloads should not block the agent request.
-
-Finally, I would introduce stronger evaluation and observability by collecting metrics for tool-selection accuracy, tool failures, latency, and end-to-end task success, together with a representative evaluation dataset for regression testing.
