@@ -220,12 +220,6 @@ Run all tests with a single command:
 uv run pytest
 ```
 
-Expected result:
-
-```text
-7 passed
-```
-
 ## Observability
 
 The project supports **LangSmith tracing** for inspecting agent execution.
@@ -239,9 +233,3 @@ When enabled, traces can be used to inspect:
 * Tool failures
 
 This is useful for understanding why the agent selected a particular tool and how the tool-calling loop was executed.
-
-## Notes
-
-The `papers/` directory contains runtime-generated PDF files and is separate from the source code under `src/`.
-
-The application maintains conversation history during the current interactive session, allowing the agent to resolve follow-up questions that depend on previous turns.
