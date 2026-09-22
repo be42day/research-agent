@@ -1,6 +1,6 @@
-from unittest.mock import MagicMock, patch
-
 import pytest
+import requests
+from unittest.mock import MagicMock, patch
 
 from chat_model.tools import download_pdf, search_arxiv
 
@@ -70,7 +70,7 @@ def test_download_pdf(tmp_path):
 def test_download_pdf_failure(tmp_path):
     fake_response = MagicMock()
 
-    fake_response.raise_for_status.side_effect = Exception(
+    fake_response.raise_for_status.side_effect = requests.RequestException(
         "404 Not Found"
     )
 
@@ -78,7 +78,7 @@ def test_download_pdf_failure(tmp_path):
         "chat_model.tools.requests.get",
         return_value=fake_response,
     ):
-        with pytest.raises(Exception, match="404 Not Found"):
+        with pytest.raises(RuntimeError, match="Failed to download PDF: 404 Not Found"):
             download_pdf.invoke({
                 "url": "https://example.com/missing.pdf",
                 "output_dir": str(tmp_path),
